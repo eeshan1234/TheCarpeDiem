@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">The CarpeDiem</string>
+    <string name="read">READ</string>
+    <string name="inspiration">Inspiration</string>
+    <string name="description">Description</string>
+    <string name="home">Home</string>
+    <string name="info">info</string>
+    <string name="trending">New</string>
+    <string name="notifications">Notifications</string>
+    <string name="search">search</string>
+    <string name="settings">settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="oneliner">OneLiner</string>
+    <string name="live">Live</string>
+    <string name="about">About</string>
+    <string name="share">Share</string>
+    <string name="contactus">ContactUs</string>
+    <string name="exit">Exit</string>
+    <string name="quotes">Quotes</string>
+    <string name="stories">Stories</string>
+    <string name="articles">Articles</string>
+    <string name="arti">ARTICLES</string>
+    <string name="microtale">MicroTale</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+</resources>
