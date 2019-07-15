@@ -60,12 +60,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-    drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -124,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerBest =findViewById(R.id.viewPagerbest);
 
         ViewPagerAdapter adapterBest=new ViewPagerAdapter(this,imgUrls);
+
         viewPagerBest.setAdapter(adapterBest);
 
         sliderDotspanel=findViewById(R.id.SliderDots);
@@ -170,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         viewPager1=findViewById(R.id.viewPager1);
-
         viewPager1.setAdapter(adapter1);
 
         viewPager1.setPadding(130,0,130,0);
@@ -181,46 +180,6 @@ public class MainActivity extends AppCompatActivity {
                 getResources().getColor(R.color.color3),
                 getResources().getColor(R.color.color4),
         };
-//        viewPager2.setAdapter(adapter2);
-//
-//        viewPager2.setPadding(130,0,130,0);
-//        Integer[] colors_temp2={
-//                getResources().getColor(R.color.color1),
-//                getResources().getColor(R.color.color2),
-//                getResources().getColor(R.color.color3),
-//                getResources().getColor(R.color.color4),
-//        };
-
-//        colors=colors_temp;
-//
-//        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//
-//            @Override
-//            public void onPageScrolled(int i, float v, int i1) {
-//                if (i<(adapter.getCount()-1)&&i<(colors.length-1)){
-//                    viewPager.setBackgroundColor(
-//                            (Integer)argbEvaluator.evaluate(
-//                                    v,
-//                                    colors[i],
-//                                    colors[i+1]
-//                            )
-//                    );
-//                }
-//                else {
-//                    viewPager.setBackgroundColor(colors[colors.length-1]);
-//                }
-//            }
-//
-//            @Override
-//            public void onPageSelected(int i) {
-//
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int i) {
-//
-//            }
-//        });
 
         colors1=colors_temp1;
         viewPager1.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -269,11 +228,11 @@ public class MainActivity extends AppCompatActivity {
                     switch (menuItem.getItemId())
                     {
                         case R.id.home:
-                           // selectedfragment = new HomeFragment();
+                            selectedfragment = new HomeFragment();
                             break;
-                        case R.id.star:
-                            selectedfragment = new StarFragment();
-                            break;
+//                        case R.id.star:
+//                            selectedfragment = new StarFragment();
+//                            break;
                         case R.id.notification:
                             selectedfragment = new NotificationFragment();
                             break;

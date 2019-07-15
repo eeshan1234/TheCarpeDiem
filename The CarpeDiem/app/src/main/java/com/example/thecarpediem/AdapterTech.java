@@ -35,7 +35,8 @@ public class AdapterTech extends PagerAdapter {
     }
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, final int position){
+    public Object instantiateItem(@NonNull ViewGroup container, final int position)
+    {
         layoutinflater =LayoutInflater.from(context);
         final View view=layoutinflater.inflate(R.layout.itemtech,container,false);
 
@@ -66,7 +67,7 @@ public class AdapterTech extends PagerAdapter {
                     Toast.makeText(view.getContext(),"Science Fiction",Toast.LENGTH_SHORT).show();
 
 
-                view.getContext().startActivity(new Intent(view.getContext(),Category.class));
+                view.getContext().startActivity(new Intent(view.getContext(),Category.class).putExtra("Pos",position));
 
             }
         });

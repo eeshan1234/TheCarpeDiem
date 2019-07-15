@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class PageAdapter extends FragmentPagerAdapter {
+
     private int numoftabs;
+
     PageAdapter(FragmentManager fm,int numoftabs){
         super(fm);
         this.numoftabs=numoftabs;
@@ -19,6 +21,10 @@ public class PageAdapter extends FragmentPagerAdapter {
                 return new StoryFragment();
             case 2:
                 return new ArticleFragment();
+
+            case 3:
+                return new PoetryFragment();
+
             default:
                 return null;
         }
