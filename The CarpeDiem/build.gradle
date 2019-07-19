@@ -4,6 +4,10 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url 'https://dl.bintray.com/vsvankhede/maven/'
+        }
+        // Mrinal added the font maven here.
         
     }
     dependencies {
