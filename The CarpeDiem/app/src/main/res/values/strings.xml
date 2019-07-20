@@ -25,4 +25,9 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Mrinal adds string values for Bold Italics and Text Style-->
+    <string name="bold">B</string>
+    <string name="italics">I</string>
+    <string name="text_style">T</string>
 </resources>

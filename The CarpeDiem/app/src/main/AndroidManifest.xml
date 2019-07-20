@@ -11,17 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".WritingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+        <activity android:name=".MainActivity">
 
-        <activity android:name=".Category"></activity>
-        <activity android:name=".viewarticle"></activity>
-
+        </activity>
+        <activity android:name=".Category" />
+        <activity android:name=".viewarticle" />
     </application>
 
 </manifest>
