@@ -1,6 +1,7 @@
 package com.example.thecarpediem;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,6 +42,7 @@ public class PoetryFragment extends Fragment {
     private String mParam2;
     MyAdapter myAdapter;
     List<String> movieList=new ArrayList<>();
+    String category;
 
     private OnFragmentInteractionListener mListener;
 
@@ -79,15 +82,28 @@ public class PoetryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootview=  inflater.inflate(R.layout.fragment_poetry, container, false);
+        SharedPreferences preferences= rootview.getContext().getSharedPreferences("tcofile",Context.MODE_PRIVATE);
+        int pos=preferences.getInt("clickedpos",0);
 
+        switch (pos){
+            case 0: category="inspiration";
+                break;
+            case 1: category="love";
+                break;
+            case 2: category="sad";
+                break;
+            case 3: category="science fiction";
+                break;
+
+        }
         final RecyclerView rv=rootview.findViewById(R.id.recycler_view);
 
         rv.setAdapter(myAdapter);
         LinearLayoutManager lm=new LinearLayoutManager(getActivity());
         rv.setLayoutManager(lm);
 
-        DatabaseReference refinsp= FirebaseDatabase.getInstance().getReference("categories").child("inspiration");
-        refinsp.child("poetry").child("english").addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("categories").child(category);
+        ref.child("poetry").child("english").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 movieList.clear();
@@ -103,7 +119,13 @@ public class PoetryFragment extends Fragment {
                     rv.setAdapter(myAdapter);
                     rv.setTop(0);
                 }
-
+                else
+                {
+                    name1="No record found currently! Try again later.";
+                    movieList.add(name1);
+                    myAdapter=new MyAdapter(movieList);
+                    rv.setAdapter(myAdapter);
+                }
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -113,7 +135,7 @@ public class PoetryFragment extends Fragment {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(getActivity(),"Database error! Try again later",Toast.LENGTH_LONG).show();
             }
         });
 

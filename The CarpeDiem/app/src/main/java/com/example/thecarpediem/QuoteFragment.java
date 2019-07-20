@@ -1,6 +1,7 @@
 package com.example.thecarpediem;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,9 +41,9 @@ public class QuoteFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    int pos;
     MyAdapter myAdapter;
     List<String> movieList=new ArrayList<>();
+    String category;
 
     private OnFragmentInteractionListener mListener;
 
@@ -59,7 +60,7 @@ public class QuoteFragment extends Fragment {
      * @return A new instance of fragment QuoteFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static QuoteFragment newInstance(String param1, String param2, int pos) {
+    public static QuoteFragment newInstance(String param1, String param2) {
         QuoteFragment fragment = new QuoteFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -83,29 +84,49 @@ public class QuoteFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootview=  inflater.inflate(R.layout.fragment_quote, container, false);
 
+        SharedPreferences preferences= rootview.getContext().getSharedPreferences("tcofile",Context.MODE_PRIVATE);
+        int pos=preferences.getInt("clickedpos",0);
+
+        switch (pos){
+            case 0: category="inspiration";
+                    break;
+            case 1: category="love";
+                    break;
+            case 2: category="sad";
+                    break;
+            case 3: category="science fiction";
+                    break;
+
+        }
         final RecyclerView rv=rootview.findViewById(R.id.recycler_view);
 
         rv.setAdapter(myAdapter);
         LinearLayoutManager lm=new LinearLayoutManager(getActivity());
         rv.setLayoutManager(lm);
 
-        DatabaseReference refinsp= FirebaseDatabase.getInstance().getReference("categories").child("inspiration");
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("categories").child(category);
 
-        refinsp.child("quotes").child("english").addValueEventListener(new ValueEventListener() {
+        ref.child("quotes").child("english").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 movieList.clear();
                 String name1 = "";
 
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
-
                    for (DataSnapshot x : dataSnapshot.getChildren()) {
                     name1 = x.getValue().toString();
                     movieList.add(name1);
                 }
                 myAdapter = new MyAdapter(movieList);
                 rv.setAdapter(myAdapter);
-
+            }
+                else
+                {
+                    name1="No record found currently! Try again later.";
+                    movieList.add(name1);
+                    myAdapter=new MyAdapter(movieList);
+                    rv.setAdapter(myAdapter);
+                }
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -113,11 +134,10 @@ public class QuoteFragment extends Fragment {
                     }
                 });
             }
-            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(getActivity(),"Database error! Try again later",Toast.LENGTH_LONG).show();
             }
         });
 

@@ -1,6 +1,7 @@
 package com.example.thecarpediem;
 
 import android.animation.ArgbEvaluator;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;

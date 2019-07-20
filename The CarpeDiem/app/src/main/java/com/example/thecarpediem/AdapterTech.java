@@ -2,6 +2,7 @@ package com.example.thecarpediem;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class AdapterTech extends PagerAdapter {
 
@@ -67,7 +70,11 @@ public class AdapterTech extends PagerAdapter {
                     Toast.makeText(view.getContext(),"Science Fiction",Toast.LENGTH_SHORT).show();
 
 
-                view.getContext().startActivity(new Intent(view.getContext(),Category.class).putExtra("Pos",position));
+                view.getContext().startActivity(new Intent(view.getContext(),Category.class));
+
+                SharedPreferences.Editor editor = view.getContext().getSharedPreferences("tcofile", MODE_PRIVATE).edit();
+                editor.putInt("clickedpos", position);
+                editor.apply();
 
             }
         });

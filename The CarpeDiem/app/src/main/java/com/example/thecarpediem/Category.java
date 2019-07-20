@@ -35,9 +35,6 @@ public class Category extends AppCompatActivity {
     TabItem tabStories;
     TabItem tabArticles;
     TabItem tabPoetry;
-    private List<String> movieList = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private MyAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,34 +50,24 @@ public class Category extends AppCompatActivity {
         tabArticles=findViewById(R.id.tabArticles);
         tabPoetry=findViewById(R.id.tabPoetry);
 
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        Intent intent=getIntent();
-        final int pos=intent.getIntExtra("Pos",0);
-
         viewPager=findViewById(R.id.viewPager);
 
-        pageAdapter=new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount(),pos);
+        pageAdapter=new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
-
-        populatecontent(pos,"quotes");
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
                 viewPager.setCurrentItem(tab.getPosition());
 
                 if (tab.getPosition()==0) {
-
                     toolbar.setBackgroundColor(ContextCompat.getColor(Category.this, R.color.colorAccent));
                     tabLayout.setBackgroundColor(ContextCompat.getColor(Category.this, R.color.colorAccent));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         getWindow().setStatusBarColor(ContextCompat.getColor(Category.this, R.color.colorAccent));
 
                     }
-                    populatecontent(pos,"quotes");
                 }
                 else if (tab.getPosition()==1){
                     toolbar.setBackgroundColor(ContextCompat.getColor(Category.this, R.color.darker_grey));
@@ -88,7 +75,6 @@ public class Category extends AppCompatActivity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         getWindow().setStatusBarColor(ContextCompat.getColor(Category.this, R.color.darker_grey));
                     }
-                    populatecontent(pos,"story");
 
                 }
                 else if (tab.getPosition()==2){
@@ -97,7 +83,6 @@ public class Category extends AppCompatActivity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         getWindow().setStatusBarColor(ContextCompat.getColor(Category.this, R.color.colorAccent));
                     }
-                    populatecontent(pos,"article");
 
                 }
                 else if (tab.getPosition()==3){
@@ -106,8 +91,6 @@ public class Category extends AppCompatActivity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         getWindow().setStatusBarColor(ContextCompat.getColor(Category.this, R.color.colorAccent));
                     }
-                    populatecontent(pos,"poetry");
-
                 }
                 else{
                     Toast.makeText(Category.this,"Unknown Error! We are working on it, sooner it'll be caught!",Toast.LENGTH_SHORT).show();
@@ -126,133 +109,4 @@ public class Category extends AppCompatActivity {
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
-
-   public void populatecontent(int pos, final String s)
-   {
-
-       switch(pos)
-       {
-           case 0: //inspiration
-               DatabaseReference refinsp= FirebaseDatabase.getInstance().getReference("categories").child("inspiration");
-               refinsp.child(s).child("english").addValueEventListener(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(DataSnapshot dataSnapshot) {
-
-                       String name1="";
-
-                       for(DataSnapshot x:dataSnapshot.getChildren()){
-                           name1= x.getValue().toString();
-
-                               movieList.add(name1);
-                       }
-                       mAdapter = new MyAdapter(movieList);
-
-//                       writings w1=new writings(movieList);
-//                       w1.setWriting(movieList);
-
-                   }
-
-                   @Override
-                   public void onCancelled(DatabaseError databaseError) {
-
-                   }
-
-               });
-
-                    break;
-
-           case 1: //love
-               DatabaseReference reflove=FirebaseDatabase.getInstance().getReference("categories").child("love");
-               reflove.addValueEventListener(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(DataSnapshot dataSnapshot) {
-                       int n=1;
-
-                       for(DataSnapshot x:dataSnapshot.getChildren()){
-
-                           String name1= dataSnapshot.child(s).child("english").child(""+n).getValue().toString();
-
-                           Toast.makeText(Category.this, ""+name1, Toast.LENGTH_SHORT).show();
-                           //  Toast.makeText(viewarticle.this, "1st pass", Toast.LENGTH_SHORT).show();
-
-                          // writings user = new writings(name1);
-                           movieList.add(name1);
-                           n=n+1;
-                       }
-                   }
-
-                   @Override
-                   public void onCancelled(DatabaseError databaseError) {
-
-                   }
-               });
-               mAdapter = new MyAdapter(movieList);
-               recyclerView.setAdapter(mAdapter);
-                    break;
-
-           case 2: //sad
-               DatabaseReference refsad=FirebaseDatabase.getInstance().getReference("categories").child("sad");
-               refsad.addValueEventListener(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(DataSnapshot dataSnapshot) {
-                       int n=1;
-
-                       for(DataSnapshot x:dataSnapshot.getChildren()){
-
-                           String name1= dataSnapshot.child(s).child("english").child(""+(n)).getValue().toString();
-
-                           Toast.makeText(Category.this, ""+name1, Toast.LENGTH_SHORT).show();
-                           //  Toast.makeText(viewarticle.this, "1st pass", Toast.LENGTH_SHORT).show();
-
-                          // writings user = new writings(name1);
-                           movieList.add(name1);
-                           n=n+1;
-                       }
-
-                   }
-
-                   @Override
-                   public void onCancelled(DatabaseError databaseError) {
-
-                   }
-               });
-               mAdapter = new MyAdapter(movieList);
-               recyclerView.setAdapter(mAdapter);
-               break;
-
-           case 3: //science fiction
-               DatabaseReference refsc=FirebaseDatabase.getInstance().getReference("categories").child("science fiction");
-               refsc.addValueEventListener(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(DataSnapshot dataSnapshot) {
-                       int n=1;
-
-                       for(DataSnapshot x:dataSnapshot.getChildren()){
-
-                           String name1= dataSnapshot.child("quotes").child("english").child(n+"").getValue().toString();
-
-                           Toast.makeText(Category.this,"Name= "+name1,Toast.LENGTH_SHORT).show();
-
-                           //  Toast.makeText(viewarticle.this, "1st pass", Toast.LENGTH_SHORT).show();
-
-                          // writings user = new writings(name1);
-                           movieList.add(name1);
-                           n=n+1;
-                       }
-
-                   }
-
-                   @Override
-                   public void onCancelled(DatabaseError databaseError) {
-
-                   }
-               });
-               mAdapter = new MyAdapter(movieList);
-               recyclerView.setAdapter(mAdapter);
-               break;
-
-            default: Toast.makeText(Category.this,"Unknown error occurred! We'll sooner trace it.",Toast.LENGTH_SHORT).show();
-
-       }
-   }
 }

@@ -4,17 +4,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.widget.Toast;
 
 public class PageAdapter extends FragmentPagerAdapter {
 
     private int numoftabs;
-   // int pos;  //0-inspiration, 1- love, 2- sad, 3- science
 
-    PageAdapter(FragmentManager fm,int numoftabs, int pos){
+    PageAdapter(FragmentManager fm,int numoftabs){
         super(fm);
         this.numoftabs=numoftabs;
-        //this.pos=pos;
-    }
+        }
     @Override
     public Fragment getItem(int position){
         switch(position){
