@@ -1,32 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:weightSum="1"
-    android:layout_marginTop="5dp"
-    android:layout_height="wrap_content"
-    >
+    android:layout_marginBottom="25dp"
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:id="@+id/card"
+        android:layout_centerHorizontal="true"
+        >
 
         <TextView
             android:id="@+id/title"
+            android:background="#000"
+            android:textColor="#fff"
+            android:fontFamily="serif"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:padding="8dp"
             android:text="Name"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="bold|italic"
             />
+    </android.support.v7.widget.CardView>
 
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        />
-</LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearlt"
+            android:background="#fff"
+            android:orientation="horizontal"
+            android:layout_below="@+id/card"
+            >
+
+           <ImageView
+               android:id="@+id/likeimgview"
+               android:layout_marginStart="20dp"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/likebtn"
+               />
+
+            <TextView
+                android:id="@+id/likestxtview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="10"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="@color/secondary_light"
+                />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+            <ImageView
+                android:id="@+id/shareimgview"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/sharebtn"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sharetxtview"
+                android:layout_marginEnd="16dp"
+                android:text="Share"
+                android:fontFamily="serif"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="@color/secondary_light"
+                />
+        </LinearLayout>
+</RelativeLayout>
