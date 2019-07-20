@@ -1,20 +1,23 @@
 package com.example.thecarpediem;
 
+import java.util.List;
+
 public class writings {
-    private String  Writing;
+
+    private List<String> Writings;
 
     public writings() {
     }
 
-    public writings( String Writing) {
-        this.Writing = Writing;
+    public writings(List<String> Writings) {
+        this.Writings = Writings;
     }
 
-    public String getWriting() {
-        return Writing;
+    public List<String> getWriting() {
+        return Writings;
     }
 
-    public void setWriting(String writ) {
-        Writing = writ;
+    public void setWriting(List<String> writ) {
+        Writings = writ;
     }
 }

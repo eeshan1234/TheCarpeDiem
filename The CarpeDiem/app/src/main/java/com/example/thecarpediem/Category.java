@@ -35,7 +35,7 @@ public class Category extends AppCompatActivity {
     TabItem tabStories;
     TabItem tabArticles;
     TabItem tabPoetry;
-    private List<writings> movieList = new ArrayList<>();
+    private List<String> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MyAdapter mAdapter;
 
@@ -52,7 +52,6 @@ public class Category extends AppCompatActivity {
         tabStories=findViewById(R.id.tabstories);
         tabArticles=findViewById(R.id.tabArticles);
         tabPoetry=findViewById(R.id.tabPoetry);
-        //recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
 //        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 //        recyclerView.setLayoutManager(mLayoutManager);
@@ -63,8 +62,9 @@ public class Category extends AppCompatActivity {
 
         viewPager=findViewById(R.id.viewPager);
 
-        pageAdapter=new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        pageAdapter=new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount(),pos);
         viewPager.setAdapter(pageAdapter);
+
         populatecontent(pos,"quotes");
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -129,8 +129,7 @@ public class Category extends AppCompatActivity {
 
    public void populatecontent(int pos, final String s)
    {
-//       Intent i=new Intent(Category.this,viewarticle.class);
-//       startActivity(i);
+
        switch(pos)
        {
            case 0: //inspiration
@@ -144,12 +143,12 @@ public class Category extends AppCompatActivity {
                        for(DataSnapshot x:dataSnapshot.getChildren()){
                            name1= x.getValue().toString();
 
-                               writings writeup = new writings(name1);
-                               movieList.add(writeup);
+                               movieList.add(name1);
                        }
                        mAdapter = new MyAdapter(movieList);
-                       //recyclerView.setAdapter(mAdapter);
-                       //viewPager.setAdapter(mAdapter);
+
+//                       writings w1=new writings(movieList);
+//                       w1.setWriting(movieList);
 
                    }
 
@@ -176,11 +175,10 @@ public class Category extends AppCompatActivity {
                            Toast.makeText(Category.this, ""+name1, Toast.LENGTH_SHORT).show();
                            //  Toast.makeText(viewarticle.this, "1st pass", Toast.LENGTH_SHORT).show();
 
-                           writings user = new writings(name1);
-                           movieList.add(user);
+                          // writings user = new writings(name1);
+                           movieList.add(name1);
                            n=n+1;
                        }
-
                    }
 
                    @Override
@@ -206,8 +204,8 @@ public class Category extends AppCompatActivity {
                            Toast.makeText(Category.this, ""+name1, Toast.LENGTH_SHORT).show();
                            //  Toast.makeText(viewarticle.this, "1st pass", Toast.LENGTH_SHORT).show();
 
-                           writings user = new writings(name1);
-                           movieList.add(user);
+                          // writings user = new writings(name1);
+                           movieList.add(name1);
                            n=n+1;
                        }
 
@@ -237,8 +235,8 @@ public class Category extends AppCompatActivity {
 
                            //  Toast.makeText(viewarticle.this, "1st pass", Toast.LENGTH_SHORT).show();
 
-                           writings user = new writings(name1);
-                           movieList.add(user);
+                          // writings user = new writings(name1);
+                           movieList.add(name1);
                            n=n+1;
                        }
 
@@ -256,9 +254,5 @@ public class Category extends AppCompatActivity {
             default: Toast.makeText(Category.this,"Unknown error occurred! We'll sooner trace it.",Toast.LENGTH_SHORT).show();
 
        }
-
    }
-
-
-
 }

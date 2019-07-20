@@ -3,10 +3,22 @@ package com.example.thecarpediem;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,6 +38,8 @@ public class StoryFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    MyAdapter myAdapter;
+    List<String> movieList=new ArrayList<>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,8 +78,46 @@ public class StoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_story, container, false);
-    }
+        View rootview=  inflater.inflate(R.layout.fragment_story, container, false);
+
+        final RecyclerView rv=rootview.findViewById(R.id.recycler_view);
+
+        rv.setAdapter(myAdapter);
+        LinearLayoutManager lm=new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(lm);
+
+        DatabaseReference refinsp= FirebaseDatabase.getInstance().getReference("categories").child("inspiration");
+        refinsp.child("story").child("english").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                movieList.clear();
+                String name1 = "";
+
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                    for (DataSnapshot x : dataSnapshot.getChildren()) {
+                        name1 = x.getValue().toString();
+
+                        movieList.add(name1);
+                    }
+                    myAdapter = new MyAdapter(movieList);
+                    rv.setAdapter(myAdapter);
+                    rv.setTop(0);
+
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            rv.smoothScrollToPosition(0);
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return rootview;    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

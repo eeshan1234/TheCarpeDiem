@@ -54,12 +54,12 @@ public class viewarticle extends AppCompatActivity {
                     for(DataSnapshot x:dataSnapshot.getChildren()){
                         name1= x.getValue().toString();
 
-                        writings writeup = new writings(name1);
-                        movieList.add(writeup);
+//                        writings writeup = new writings(name1);
+//                        movieList.add(writeup);
                     }
                 Toast.makeText(viewarticle.this,""+movieList,Toast.LENGTH_SHORT).show();
-                mAdapter = new MyAdapter(movieList);
-                recyclerView.setAdapter(mAdapter);
+//                mAdapter = new MyAdapter(movieList);
+//                recyclerView.setAdapter(mAdapter);
             }
 
             @Override
@@ -83,12 +83,12 @@ public class viewarticle extends AppCompatActivity {
                         Toast.makeText(viewarticle.this, ""+name1, Toast.LENGTH_SHORT).show();
                         //  Toast.makeText(viewarticle.this, "1st pass", Toast.LENGTH_SHORT).show();
 
-                        writings user = new writings(name1);
-                        movieList.add(user);
+//                        writings user = new writings(name1);
+//                        movieList.add(user);
                         n=n+1;
                     }
-                    mAdapter = new MyAdapter(movieList);
-                    recyclerView.setAdapter(mAdapter);
+//                    mAdapter = new MyAdapter(movieList);
+//                    recyclerView.setAdapter(mAdapter);
                 }
 
                 @Override
@@ -112,12 +112,12 @@ public class viewarticle extends AppCompatActivity {
                         Toast.makeText(viewarticle.this, ""+name1, Toast.LENGTH_SHORT).show();
                         //  Toast.makeText(viewarticle.this, "1st pass", Toast.LENGTH_SHORT).show();
 
-                        writings user = new writings(name1);
-                        movieList.add(user);
+//                        writings user = new writings(name1);
+//                        movieList.add(user);
                         n=n+1;
                     }
-                    mAdapter = new MyAdapter(movieList);
-                    recyclerView.setAdapter(mAdapter);
+//                    mAdapter = new MyAdapter(movieList);
+//                    recyclerView.setAdapter(mAdapter);
                 }
 
                 @Override
@@ -143,12 +143,12 @@ public class viewarticle extends AppCompatActivity {
 
                         //  Toast.makeText(viewarticle.this, "1st pass", Toast.LENGTH_SHORT).show();
 
-                        writings user = new writings(name1);
-                        movieList.add(user);
+//                        writings user = new writings(name1);
+//                        movieList.add(user);
                         n=n+1;
                     }
-                    mAdapter = new MyAdapter(movieList);
-                    recyclerView.setAdapter(mAdapter);
+//                    mAdapter = new MyAdapter(movieList);
+//                    recyclerView.setAdapter(mAdapter);
                 }
 
                 @Override
