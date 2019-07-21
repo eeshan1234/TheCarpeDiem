@@ -1,7 +1,12 @@
 package com.example.thecarpediem;
 
 import android.animation.ArgbEvaluator;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -14,9 +19,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +33,9 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,23 +55,23 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout sliderDotspanel;
     private int dotscount;
     private ImageView[] dots;
+    InternetConnection ic;
     private String[] imgUrls=new String[]{
             "https://cdn.pixabay.com/photo/2017/12/21/12/26/glowworm-3031704_960_720.jpg",
             "https://cdn.pixabay.com/photo/2017/11/07/00/07/fantasy-2925250_960_720.jpg",
-
             "https://cdn.pixabay.com/photo/2016/11/11/23/34/cat-1817970_960_720.jpg",
-
             "https://cdn.pixabay.com/photo/2017/12/24/09/09/road-3036620_960_720.jpg",
             "https://cdn.pixabay.com/photo/2017/10/10/15/28/butterfly-2837589_960_720.jpg"
 
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //ic= new InternetConnection(MainActivity.this);
+        checkInternet();
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -211,15 +221,79 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    public void checkInternet()
+    {
+        ConnectivityManager cm= (ConnectivityManager)MainActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo= cm.getActiveNetworkInfo();
+
+        boolean isConnected = networkInfo!=null && networkInfo.isConnectedOrConnecting();
+        if(!isConnected)
+        {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+            builder1.setMessage("NO Internet! Check Internet connection and try again.");
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "Reload",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivity(new Intent(MainActivity.this,MainActivity.class));
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    "Exit",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(MainActivity.this,"Leaving off!",Toast.LENGTH_SHORT).show();
+                            finishAffinity();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        }
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //checkInternet();
     }
 
     public void onBackPressed() {
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
-        }
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+            builder1.setMessage("Are you sure, Want to Exit?");
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "Sure",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(MainActivity.this,"Have a good day!",Toast.LENGTH_SHORT).show();
+                            finishAffinity();
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    "Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+       }
+
+
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
