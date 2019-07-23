@@ -103,7 +103,7 @@ public class ArticleFragment extends Fragment {
         rv.setLayoutManager(lm);
 
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("categories").child(category);
-        ref.child("article").child("english").addValueEventListener(new ValueEventListener() {
+        ref.child("article").child("writings").child("english").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 movieList.clear();

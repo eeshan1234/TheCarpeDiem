@@ -103,7 +103,7 @@ public class PoetryFragment extends Fragment {
         rv.setLayoutManager(lm);
 
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("categories").child(category);
-        ref.child("poetry").child("english").addValueEventListener(new ValueEventListener() {
+        ref.child("poetry").child("writings").child("english").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 movieList.clear();

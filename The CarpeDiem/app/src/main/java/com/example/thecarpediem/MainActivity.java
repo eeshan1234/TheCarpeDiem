@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -31,6 +32,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -56,21 +62,19 @@ public class MainActivity extends AppCompatActivity {
     private int dotscount;
     private ImageView[] dots;
     InternetConnection ic;
-    private String[] imgUrls=new String[]{
-            "https://cdn.pixabay.com/photo/2017/12/21/12/26/glowworm-3031704_960_720.jpg",
-            "https://cdn.pixabay.com/photo/2017/11/07/00/07/fantasy-2925250_960_720.jpg",
-            "https://cdn.pixabay.com/photo/2016/11/11/23/34/cat-1817970_960_720.jpg",
-            "https://cdn.pixabay.com/photo/2017/12/24/09/09/road-3036620_960_720.jpg",
-            "https://cdn.pixabay.com/photo/2017/10/10/15/28/butterfly-2837589_960_720.jpg"
-
+    private String[] imgUrls={
+            R.drawable.loadingimg+"",
+            R.drawable.loadingimg+"",
+            R.drawable.loadingimg+"",
+            R.drawable.loadingimg+""
     };
+    DatabaseReference refbestofday, reflive,refwordofday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //ic= new InternetConnection(MainActivity.this);
         checkInternet();
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,22 +92,77 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
 
-                Toast.makeText(MainActivity.this, "ID1= " + id, Toast.LENGTH_LONG).show();
-                switch (id) {
-                    case R.id.nav_message:
+                switch(id) {
+                    case R.id.writeup:
+                        Intent i=new Intent(MainActivity.this,WritingActivity.class);
+                        startActivity(i);
+                        break;
+                    case R.id.favourites:
+                        Intent intent1=new Intent(MainActivity.this,Favourites.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.setting:
                         //logic
                         break;
-                    case R.id.nav_chat:
-                        //logic
+                    case R.id.about:
+                        Intent in=new Intent(MainActivity.this,About.class);
+                        startActivity(in);
                         break;
-                    case R.id.nav_profile:
-                        //logic
+                    case R.id.team:
+                        Intent inte=new Intent(MainActivity.this,OurTeam.class);
+                        startActivity(inte);
                         break;
-                    case R.id.nav_share:
-                        //logic
+                    case R.id.contact:
+                        try {
+                            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                    "mailto", "reachtco@gmail.com", null));
+
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Regarding The CarpeDiem Android app");
+                            startActivity(Intent.createChooser(emailIntent, null));
+                        } catch (Exception e)
+                        {
+                            Toast.makeText(MainActivity.this,"Necessary packages, not available on your device! " +
+                                    "Kindly contact us directly at \"reachtco@gmail.com\"",Toast.LENGTH_LONG).show();
+                        }
                         break;
-                    case R.id.nav_send:
-                        //logic
+                    case R.id.share:
+
+                       try {
+                           Intent intent = new Intent(Intent.ACTION_SEND);
+
+                           intent.setType("text/plain");
+                           intent.putExtra(Intent.EXTRA_SUBJECT, "The CarpeDiem");
+                           intent.putExtra(Intent.EXTRA_TEXT, "Install *The CarpeDiem* App now! https://github.com/sarthaksarm/TheCarpeDiem"); //give article's or app's link here
+                           startActivity(Intent.createChooser(intent, "Share!"));
+                       }
+                       catch (Exception e)
+                       {
+                           Toast.makeText(MainActivity.this,"Necessary packages, not available on your device! " +
+                                   "Kindly contact us directly at \"reachtco@gmail.com\"",Toast.LENGTH_LONG).show();
+                       }
+                        break;
+                    case R.id.exit:
+                        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("Are you Sure? Want to exit?");
+                        builder.setCancelable(true);
+
+                        builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finishAffinity();
+                            }
+                        });
+
+                        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                onBackPressed();
+                            }
+                        });
+                        AlertDialog alertdialog=builder.create();
+                        alertdialog.show();
+
+                        break;
                     default:
                         return true;
                 }
@@ -111,14 +170,55 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         BottomNavigationView bottomnav=findViewById(R.id.bottom_navigation);
         bottomnav.setOnNavigationItemSelectedListener(navListener);
+
         imgword=(ImageView)findViewById(R.id.wordimg);
         imglive=(ImageView)findViewById(R.id.liveimg);
 
-        Picasso.get().load("https://cdn.pixabay.com/photo/2017/12/21/12/26/glowworm-3031704_960_720.jpg").placeholder(R.drawable.logo).into(imgword);
-        Picasso.get().load("https://cdn.pixabay.com/photo/2017/11/07/00/07/fantasy-2925250_960_720.jpg").placeholder(R.drawable.logo).into(imgword);
+        refbestofday= FirebaseDatabase.getInstance().getReference("bestofday").child("imgs");
+        reflive=FirebaseDatabase.getInstance().getReference("live");
+        refwordofday=FirebaseDatabase.getInstance().getReference("wordoftheday");
+
+        loadliveimg(reflive);
+        loadwordimg(refwordofday);
+
+       // imgUrls=loadimgs(refbestofday, imgUrls);
+
+        refbestofday.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int i=0;
+                for(DataSnapshot x:dataSnapshot.getChildren())
+                {
+                    if(i==4)
+                    {
+                        break;
+                    }
+                    imgUrls[i]=x.getValue().toString();
+                    i=i+1;
+                }
+                ViewPagerAdapter adapterBest=new ViewPagerAdapter(MainActivity.this,imgUrls);
+                viewPagerBest.setAdapter(adapterBest);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
 
 
         models1=new ArrayList<>();
@@ -133,19 +233,15 @@ public class MainActivity extends AppCompatActivity {
 
         viewPagerBest =findViewById(R.id.viewPagerbest);
 
-        ViewPagerAdapter adapterBest=new ViewPagerAdapter(this,imgUrls);
-
-        viewPagerBest.setAdapter(adapterBest);
 
         sliderDotspanel=findViewById(R.id.SliderDots);
-
         dotscount = 5;
         dots = new ImageView[dotscount];
 
         for(int i = 0; i < dotscount; i++){
 
             dots[i] = new ImageView(this);
-            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.nonactive_dot));
+            dots[i].setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.nonactive_dot));
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -222,7 +318,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    public void loadliveimg(DatabaseReference reflive)
+    {
+        reflive.child("img").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Picasso.get().load(dataSnapshot.getValue().toString()).placeholder(R.drawable.loadingimg).into(imglive);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public void loadwordimg(DatabaseReference refwordofday)
+    {
+        refwordofday.child("img").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Picasso.get().load(dataSnapshot.getValue().toString()).placeholder(R.drawable.loadingimg).into(imgword);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     public void checkInternet()
     {
         ConnectivityManager cm= (ConnectivityManager)MainActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -255,14 +378,40 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert11 = builder1.create();
             alert11.show();
         }
-
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //checkInternet();
     }
 
+//    public String[] loadimgs(DatabaseReference refbestofday, final String[] imgUrls)
+//    {
+//        refbestofday.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                int i=0;
+//                for(DataSnapshot x:dataSnapshot.getChildren())
+//                {
+//                    if(i==4)
+//                    {
+//                        break;
+//                    }
+//                    imgUrls[i]=x.getValue().toString();
+//                    i=i+1;
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//        if(imgUrls[0].equals(""))
+//        {
+//
+//            loadimgs(refbestofday,imgUrls);
+//        }
+//
+//
+//        return imgUrls;
+//
+//    }
     public void onBackPressed() {
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -292,8 +441,6 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert11 = builder1.create();
             alert11.show();
        }
-
-
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -329,9 +476,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case R.id.settings:
-                Toast.makeText(getApplicationContext(),"settings",Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.live:
                 Toast.makeText(getApplicationContext(),"live",Toast.LENGTH_SHORT).show();
                 return true;

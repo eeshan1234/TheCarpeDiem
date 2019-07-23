@@ -13,11 +13,14 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".ScreenSlidePager">
-
-        </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".WritingActivity">
+        <activity android:name=".ScreenSlidePager"/>
+        <activity android:name=".WritingActivity"/>
+        <activity android:name=".OurTeam"></activity>
+        <activity android:name=".Favourites" />
+        <activity android:name=".Notification" />
+        <activity android:name=".About" />
+        <activity android:name=".Splash" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
