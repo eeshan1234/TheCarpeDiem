@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -91,22 +92,77 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
 
-                Toast.makeText(MainActivity.this, "ID1= " + id, Toast.LENGTH_LONG).show();
-                switch (id) {
-                    case R.id.nav_message:
+                switch(id) {
+                    case R.id.writeup:
+                        Intent i=new Intent(MainActivity.this,WritingActivity.class);
+                        startActivity(i);
+                        break;
+                    case R.id.favourites:
+                        Intent intent1=new Intent(MainActivity.this,Favourites.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.setting:
                         //logic
                         break;
-                    case R.id.nav_chat:
-                        //logic
+                    case R.id.about:
+                        Intent in=new Intent(MainActivity.this,About.class);
+                        startActivity(in);
                         break;
-                    case R.id.nav_profile:
-                        //logic
+                    case R.id.team:
+                        Intent inte=new Intent(MainActivity.this,OurTeam.class);
+                        startActivity(inte);
                         break;
-                    case R.id.nav_share:
-                        //logic
+                    case R.id.contact:
+                        try {
+                            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                    "mailto", "reachtco@gmail.com", null));
+
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Regarding The CarpeDiem Android app");
+                            startActivity(Intent.createChooser(emailIntent, null));
+                        } catch (Exception e)
+                        {
+                            Toast.makeText(MainActivity.this,"Necessary packages, not available on your device! " +
+                                    "Kindly contact us directly at \"reachtco@gmail.com\"",Toast.LENGTH_LONG).show();
+                        }
                         break;
-                    case R.id.nav_send:
-                        //logic
+                    case R.id.share:
+
+                       try {
+                           Intent intent = new Intent(Intent.ACTION_SEND);
+
+                           intent.setType("text/plain");
+                           intent.putExtra(Intent.EXTRA_SUBJECT, "The CarpeDiem");
+                           intent.putExtra(Intent.EXTRA_TEXT, "Install *The CarpeDiem* App now! https://github.com/sarthaksarm/TheCarpeDiem"); //give article's or app's link here
+                           startActivity(Intent.createChooser(intent, "Share!"));
+                       }
+                       catch (Exception e)
+                       {
+                           Toast.makeText(MainActivity.this,"Necessary packages, not available on your device! " +
+                                   "Kindly contact us directly at \"reachtco@gmail.com\"",Toast.LENGTH_LONG).show();
+                       }
+                        break;
+                    case R.id.exit:
+                        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("Are you Sure? Want to exit?");
+                        builder.setCancelable(true);
+
+                        builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finishAffinity();
+                            }
+                        });
+
+                        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                onBackPressed();
+                            }
+                        });
+                        AlertDialog alertdialog=builder.create();
+                        alertdialog.show();
+
+                        break;
                     default:
                         return true;
                 }
@@ -385,8 +441,6 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert11 = builder1.create();
             alert11.show();
        }
-
-
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -422,9 +476,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case R.id.settings:
-                Toast.makeText(getApplicationContext(),"settings",Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.live:
                 Toast.makeText(getApplicationContext(),"live",Toast.LENGTH_SHORT).show();
                 return true;
