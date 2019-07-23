@@ -106,7 +106,7 @@ public class QuoteFragment extends Fragment {
 
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("categories").child(category);
 
-        ref.child("quotes").child("english").addValueEventListener(new ValueEventListener() {
+        ref.child("quotes").child("writings").child("english").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 movieList.clear();

@@ -34,7 +34,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView=new ImageView(context);
-        Picasso.get().load(imgurls[position]).placeholder(R.drawable.logo).into(imageView);
+        Picasso.get().load(imgurls[position]).placeholder(R.drawable.loadingimg).into(imageView);
 
         container.addView(imageView);
         return imageView;
