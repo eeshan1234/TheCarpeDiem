@@ -36,6 +36,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-database:0.4.0'
     implementation 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
+    implementation 'com.github.ViksaaSkool:AwesomeSplash:v1.0.0'
+    implementation 'com.android.support:design:28.+'
 
 
     implementation 'com.vstechlab.easyfonts:easyfonts:1.0.0'
