@@ -38,6 +38,9 @@ dependencies {
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
     implementation 'com.github.ViksaaSkool:AwesomeSplash:v1.0.0'
     implementation 'com.android.support:design:28.+'
+    implementation 'info.hoang8f:fbutton:1.0.5'
+    implementation 'com.google.firebase:firebase-auth:16.0.3'
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
 
 
     implementation 'com.vstechlab.easyfonts:easyfonts:1.0.0'

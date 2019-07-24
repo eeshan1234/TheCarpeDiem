@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,39 +35,44 @@ public class OurTeam extends AppCompatActivity {
     CountDownTimer countDownTimer;
     int timeValue = 5;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    switch (menuItem.getItemId())
+                    {
+                        case R.id.home:
+                            Intent i=new Intent(OurTeam.this,MainActivity.class);
+                            startActivity(i);
+                            break;
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.home:
-                    Intent intent=new Intent(OurTeam.this,MainActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.star:
-                    Intent intent2=new Intent(OurTeam.this,Favourites.class);
-                    startActivity(intent2);
-                    break;
-                case R.id.notification:
-                    Intent intent3=new Intent(OurTeam.this,Notification.class);
-                    startActivity(intent3);
-                    break;
-                case R.id.info:
-//                    Intent intent4=new Intent(About.this,Notification.class);
-//                    startActivity(intent4);
-                    break;
-            }
-            return true;
-        }
-    };
+                        case R.id.writingact:
+                            Intent intent=new Intent(OurTeam.this,WritingActivity.class);
+                            startActivity(intent);
+                            break;
 
+                        case R.id.favouritecollec:
+                            Intent in=new Intent(OurTeam.this,Favourites.class);
+                            startActivity(in);
+                            break;
+
+                        case R.id.notification:
+                            Intent inte=new Intent(OurTeam.this,Notification.class);
+                            startActivity(inte);
+                            break;
+                    }
+                    return true;
+                }
+            };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_our_team);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnNavigationItemSelectedListener(navListener);
 
         kenBurnsView=(KenBurnsView)findViewById(R.id.image);
         AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();

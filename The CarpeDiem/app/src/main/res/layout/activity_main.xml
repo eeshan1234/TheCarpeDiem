@@ -205,7 +205,7 @@
             android:background="@color/colorPrimaryDark"
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
-            app:menu="@menu/menu"/>
+            app:menu="@menu/menuhome"/>
     </RelativeLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

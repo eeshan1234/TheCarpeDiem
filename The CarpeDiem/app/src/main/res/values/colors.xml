@@ -10,8 +10,8 @@
     <color name="color4">#B51ACF</color>
     <color name="darker_grey">#3A3C3B</color>
     <color name="Wheat">#5dff40</color>
-    <color name="splashtxt">#3d3d3d</color>
-
+    <color name="splashtxt">#fff</color>
+    <color name="Black">#000</color>
 
     <color name="primary_dark_text">#28333D</color>
     <color name="secondary_text">#434343</color>

@@ -44,7 +44,7 @@
             android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/likebtn"
+            android:src="@drawable/favourite"
             />
 
         <TextView
@@ -52,9 +52,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
-            android:text="0"
+            android:text="Favourite"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textColor="@color/secondary_light"
             />
         <View
@@ -82,4 +82,7 @@
             android:textColor="@color/secondary_light"
             />
     </LinearLayout>
+
+
+
 </RelativeLayout>

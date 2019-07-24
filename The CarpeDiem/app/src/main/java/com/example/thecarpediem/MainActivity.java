@@ -28,10 +28,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private int dotscount;
     private ImageView[] dots;
     InternetConnection ic;
+    private FirebaseAuth.AuthStateListener mauthStateListener;
     private String[] imgUrls={
             R.drawable.loadingimg+"",
             R.drawable.loadingimg+"",
@@ -73,7 +77,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_main);
+        setupFirebaseListener();
 
         checkInternet();
         final Toolbar toolbar = findViewById(R.id.toolbar);
@@ -149,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
                         builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(),"Signing out",Toast.LENGTH_SHORT).show();
+                                FirebaseAuth.getInstance().signOut();
                                 finishAffinity();
                             }
                         });
@@ -208,17 +217,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
-
-
-
 
 
         models1=new ArrayList<>();
@@ -416,7 +414,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
             builder1.setMessage("Are you sure, Want to Exit?");
             builder1.setCancelable(true);
@@ -446,23 +445,23 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    Fragment selectedfragment = null;
                     switch (menuItem.getItemId())
                     {
-                        case R.id.home:
-                            selectedfragment = new HomeFragment();
+                        case R.id.writingact:
+                            Intent i=new Intent(MainActivity.this,WritingActivity.class);
+                            startActivity(i);
                             break;
-//                        case R.id.star:
-//                            selectedfragment = new StarFragment();
-//                            break;
+
+                        case R.id.favouritecollec:
+                            Intent in=new Intent(MainActivity.this,Favourites.class);
+                            startActivity(in);
+                            break;
+
                         case R.id.notification:
-                            selectedfragment = new NotificationFragment();
-                            break;
-                        case R.id.info:
-                            selectedfragment = new InfoFragment();
+                            Intent inte=new Intent(MainActivity.this,Notification.class);
+                            startActivity(inte);
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frag_cont1,selectedfragment).commit();
                     return true;
                 }
             };
@@ -476,23 +475,111 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case R.id.live:
-                Toast.makeText(getApplicationContext(),"live",Toast.LENGTH_SHORT).show();
+            case R.id.logout:
+                Toast.makeText(getApplicationContext(),"Signing out",Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signOut();
                 return true;
+
             case R.id.About:
-                Toast.makeText(getApplicationContext(),"about",Toast.LENGTH_SHORT).show();
+                Intent in=new Intent(MainActivity.this,About.class);
+                startActivity(in);
                 return true;
+
             case R.id.Share:
-                Toast.makeText(getApplicationContext(),"share",Toast.LENGTH_SHORT).show();
+
+                try {
+                    Toast.makeText(MainActivity.this,"Spread it wider!",Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "The CarpeDiem");
+                    intent.putExtra(Intent.EXTRA_TEXT, "Install *The CarpeDiem* App now! https://github.com/sarthaksarm/TheCarpeDiem"); //give article's or app's link here
+                    startActivity(Intent.createChooser(intent, "Share!"));
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(MainActivity.this,"Necessary packages, not available on your device! " +
+                            "Kindly contact us directly at \"reachtco@gmail.com\"",Toast.LENGTH_LONG).show();
+                }
+
                 return true;
+
             case R.id.contactus:
-                Toast.makeText(getApplicationContext(),"contacts",Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(MainActivity.this,"Write to us directly!",Toast.LENGTH_SHORT).show();
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                            "mailto", "reachtco@gmail.com", null));
+
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Regarding The CarpeDiem Android app");
+                    startActivity(Intent.createChooser(emailIntent, null));
+                } catch (Exception e)
+                {
+                    Toast.makeText(MainActivity.this,"Necessary packages, not available on your device! " +
+                            "Kindly contact us directly at \"reachtco@gmail.com\"",Toast.LENGTH_LONG).show();
+                }
                 return true;
+
             case R.id.exit:
-                Toast.makeText(getApplicationContext(),"exit",Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Are you Sure? Want to exit?");
+                builder.setCancelable(true);
+
+                builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"Signing out",Toast.LENGTH_SHORT).show();
+                        FirebaseAuth.getInstance().signOut();
+                        finishAffinity();
+                    }
+                });
+
+                builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+                });
+                AlertDialog alertdialog=builder.create();
+                alertdialog.show();
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void setupFirebaseListener(){
+
+        mauthStateListener=new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user=firebaseAuth.getCurrentUser();
+                if(user!=null){
+                    //signed-in
+                    Log.d("AccountManager","onAuthStateChanged: signed_in: "+user.getUid());
+
+                }
+                else{
+                    //signout
+                    Intent i=new Intent(MainActivity.this, Login.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+            }
+        };
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(mauthStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mauthStateListener!=null)
+            FirebaseAuth.getInstance().removeAuthStateListener(mauthStateListener);
     }
 }

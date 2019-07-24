@@ -9,6 +9,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -36,17 +37,17 @@ public class About extends AppCompatActivity {
                     Intent intent=new Intent(About.this,MainActivity.class);
                     startActivity(intent);
                     break;
-                case R.id.star:
-                    Intent intent2=new Intent(About.this,Favourites.class);
-                    startActivity(intent2);
+                case R.id.writingact:
+                    Intent intent1=new Intent(About.this,WritingActivity.class);
+                    startActivity(intent1);
                     break;
                 case R.id.notification:
                     Intent intent3=new Intent(About.this,Notification.class);
                     startActivity(intent3);
                     break;
-                case R.id.info:
-//                    Intent intent4=new Intent(About.this,Notification.class);
-//                    startActivity(intent4);
+                case R.id.favouritecollec:
+                    Intent intent4=new Intent(About.this,Favourites.class);
+                    startActivity(intent4);
                     break;
             }
             return true;
@@ -57,6 +58,9 @@ public class About extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
+
         setContentView(R.layout.activity_about);
         nettext=findViewById(R.id.nettxt);
 

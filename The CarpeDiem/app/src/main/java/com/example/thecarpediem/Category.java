@@ -2,6 +2,8 @@ package com.example.thecarpediem;
 
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Toast;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -39,6 +43,8 @@ public class Category extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_category);
         toolbar= findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
@@ -109,4 +115,29 @@ public class Category extends AppCompatActivity {
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    switch (menuItem.getItemId())
+                    {
+                        case R.id.home:
+                            Intent i=new Intent(Category.this,MainActivity.class);
+                            startActivity(i);
+                            break;
+
+                        case R.id.favouritecollec:
+                            Intent in=new Intent(Category.this,Favourites.class);
+                            startActivity(in);
+                            break;
+
+                        case R.id.notification:
+                            Intent inte=new Intent(Category.this,Notification.class);
+                            startActivity(inte);
+                            break;
+                    }
+                    return true;
+                }
+            };
 }

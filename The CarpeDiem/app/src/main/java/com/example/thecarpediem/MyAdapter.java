@@ -9,22 +9,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private List<String> userList;
     public ImageView shareimg;
-    public ImageView likeimg;
     public int counter=0;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public TextView likescountertxt;
+        public ImageView likeimg;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             likescountertxt=(TextView)view.findViewById(R.id.likestxtview);
+            likeimg=(ImageView)itemView.findViewById(R.id.likeimgview);
         }
     }
 
@@ -35,7 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_list, parent, false);
         shareimg=(ImageView)itemView.findViewById(R.id.shareimgview);
-        likeimg=(ImageView)itemView.findViewById(R.id.likeimgview);
+
 
 
         //Share particular article
@@ -58,17 +61,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         String writ = userList.get(position);
         holder.title.setText(writ);
 
-        likeimg.setOnClickListener(new View.OnClickListener() {
+        holder.likeimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 counter++;
                 if(counter%2!=0){
-                    holder.likescountertxt.setText("1");
+                    holder.likescountertxt.setText("Added");
+                    Picasso.get().load(R.drawable.favouriteclick).placeholder(R.drawable.favouriteclick).into(holder.likeimg);
+                    //Saving respective content into file
 
                 }
 
                 else{
-                    holder.likescountertxt.setText("0");
+                    holder.likescountertxt.setText("Favourite");
+                    Picasso.get().load(R.drawable.favourite).placeholder(R.drawable.favourite).into(holder.likeimg);
+
+                    //remove content from file
+
+
+
                 }
             }
         });
