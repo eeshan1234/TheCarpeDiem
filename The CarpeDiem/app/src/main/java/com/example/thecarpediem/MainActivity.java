@@ -109,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent1);
                         break;
                     case R.id.setting:
-                        //logic
+                        Intent intent2=new Intent(MainActivity.this,Settings.class);
+                        startActivity(intent2);
                         break;
                     case R.id.about:
                         Intent in=new Intent(MainActivity.this,About.class);
