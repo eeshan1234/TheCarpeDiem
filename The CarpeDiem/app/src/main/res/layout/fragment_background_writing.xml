@@ -1,0 +1,58 @@
+<!-- fragment_screen_slide_page.xml -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/includenextprevious"
+                    layout="@layout/next_previous_button" />
+
+                <FrameLayout
+                    android:id="@+id/frameContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/includenextprevious">
+
+                        <ImageView
+                            android:id="@+id/backgroundImageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@color/circle_image_shadow" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/writing_title"
+                                    style="?android:textAppearanceMedium"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:lineSpacingMultiplier="1.2"
+                                    android:padding="16dp"
+                                    android:text="@string/writing_title"
+
+                                    />
+
+                                <TextView
+                                    android:id="@+id/writing_content"
+                                    style="?android:textAppearanceMedium"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/writing_title"
+                                    android:lineSpacingMultiplier="1.2"
+                                    android:padding="16dp"
+                                    android:text="@string/lorem_ipsum" />
+                        </RelativeLayout>
+
+                </FrameLayout>
+
+        </RelativeLayout>
+
+</ScrollView>

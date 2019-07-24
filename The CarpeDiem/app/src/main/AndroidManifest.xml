@@ -13,6 +13,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".ScreenSlidePager"/>
+        <activity android:name=".WritingActivity"/>
         <activity android:name=".OurTeam"></activity>
         <activity android:name=".Favourites" />
         <activity android:name=".Notification" />
@@ -25,7 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WritingActivity" />
         <activity android:name=".Category" />
 
         <receiver android:name=".InternetConnection">
