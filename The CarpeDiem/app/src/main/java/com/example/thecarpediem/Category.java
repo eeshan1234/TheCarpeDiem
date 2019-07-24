@@ -50,6 +50,9 @@ public class Category extends AppCompatActivity {
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
+        BottomNavigationView navigationView=findViewById(R.id.nav_view);
+        navigationView.setOnNavigationItemSelectedListener(navListener);
+
         tabLayout=findViewById(R.id.tablayout);
         tabQuotes=findViewById(R.id.tabquotes);
         tabStories=findViewById(R.id.tabstories);
