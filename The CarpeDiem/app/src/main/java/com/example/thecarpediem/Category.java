@@ -15,12 +15,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +42,7 @@ public class Category extends AppCompatActivity {
     TabItem tabStories;
     TabItem tabArticles;
     TabItem tabPoetry;
+    private FirebaseAuth.AuthStateListener mauthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class Category extends AppCompatActivity {
         toolbar= findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
+        setupFirebaseListener();
 
         tabLayout=findViewById(R.id.tablayout);
         tabQuotes=findViewById(R.id.tabquotes);
@@ -140,4 +145,35 @@ public class Category extends AppCompatActivity {
                     return true;
                 }
             };
+    private void setupFirebaseListener() {
+
+        mauthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    //signed-in
+                    Log.d("AccountManager", "onAuthStateChanged: signed_in: " + user.getUid());
+
+                } else {
+                    //signout
+                    Intent i = new Intent(Category.this, Login.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+            }
+        };
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(mauthStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mauthStateListener!=null)
+            FirebaseAuth.getInstance().removeAuthStateListener(mauthStateListener);
+    }
 }

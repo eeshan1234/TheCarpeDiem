@@ -8,12 +8,15 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +29,7 @@ public class About extends AppCompatActivity {
     TextView nettext;
     CountDownTimer countDownTimer;
     int timeValue = 5;
+    private FirebaseAuth.AuthStateListener mauthStateListener;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,6 +66,8 @@ public class About extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_SECURE);
 
         setContentView(R.layout.activity_about);
+        setupFirebaseListener();
+
         nettext=findViewById(R.id.nettxt);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -173,4 +179,36 @@ public class About extends AppCompatActivity {
         Intent i =new Intent(About.this,MainActivity.class);
         startActivity(i);
     }
+    private void setupFirebaseListener() {
+
+        mauthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    //signed-in
+                    Log.d("AccountManager", "onAuthStateChanged: signed_in: " + user.getUid());
+
+                } else {
+                    //signout
+                    Intent i = new Intent(About.this, Login.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+            }
+        };
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(mauthStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mauthStateListener!=null)
+            FirebaseAuth.getInstance().removeAuthStateListener(mauthStateListener);
+    }
+
 }

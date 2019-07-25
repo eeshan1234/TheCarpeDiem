@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,6 +21,8 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator;
 import com.flaviofaria.kenburnsview.Transition;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -34,6 +37,7 @@ public class OurTeam extends AppCompatActivity {
     TextView nettextdevelop;
     CountDownTimer countDownTimer;
     int timeValue = 5;
+    private FirebaseAuth.AuthStateListener mauthStateListener;
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -70,6 +74,7 @@ public class OurTeam extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_our_team);
+        setupFirebaseListener();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(navListener);
@@ -123,11 +128,36 @@ public class OurTeam extends AppCompatActivity {
             }
         };
     }
+    private void setupFirebaseListener() {
 
+        mauthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    //signed-in
+                    Log.d("AccountManager", "onAuthStateChanged: signed_in: " + user.getUid());
+
+                } else {
+                    //signout
+                    Intent i = new Intent(OurTeam.this, Login.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+            }
+        };
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mauthStateListener!=null)
+            FirebaseAuth.getInstance().removeAuthStateListener(mauthStateListener);
+    }
     @Override
     protected void onStart() {
         super.onStart();
-
+        FirebaseAuth.getInstance().addAuthStateListener(mauthStateListener);
         FirebaseRecyclerAdapter<Blog, BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Blog, OurTeam.BlogViewHolder>
                 (Blog.class, R.layout.cardview, OurTeam.BlogViewHolder.class, mDatabase) {
             @Override

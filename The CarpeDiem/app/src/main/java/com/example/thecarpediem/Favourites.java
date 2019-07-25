@@ -6,11 +6,16 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class Favourites extends AppCompatActivity {
     private NavigationView nv;
+    private FirebaseAuth.AuthStateListener mauthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +26,7 @@ public class Favourites extends AppCompatActivity {
 
         BottomNavigationView navigationView=findViewById(R.id.bottom_navigation);
         navigationView.setOnNavigationItemSelectedListener(navListener);
+        setupFirebaseListener();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -48,5 +54,36 @@ public class Favourites extends AppCompatActivity {
                 }
             };
 
+    private void setupFirebaseListener() {
+
+        mauthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    //signed-in
+                    Log.d("AccountManager", "onAuthStateChanged: signed_in: " + user.getUid());
+
+                } else {
+                    //signout
+                    Intent i = new Intent(Favourites.this, Login.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+            }
+        };
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(mauthStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mauthStateListener!=null)
+            FirebaseAuth.getInstance().removeAuthStateListener(mauthStateListener);
+    }
 
 }
