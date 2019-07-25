@@ -3,6 +3,9 @@ package com.example.thecarpediem;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -29,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -141,8 +145,9 @@ public class Notification extends AppCompatActivity {
             post_desc.setText(desc);
         }
 
-        public void setImage(Context ctx, String image) {
-            ImageView post_Image = (ImageView)mview.findViewById(R.id.item_image);
+        public void setImage(final Context ctx, final String image) {
+            final ImageView post_Image = (ImageView)mview.findViewById(R.id.item_image);
+
             Picasso.get().load(image).placeholder(R.drawable.splashimg).into(post_Image);
         }
     }
