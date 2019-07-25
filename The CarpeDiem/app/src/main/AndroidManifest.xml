@@ -15,15 +15,18 @@
         android:theme="@style/AppTheme.NoActionBar">
 
         <activity android:name=".Splash">
+
+        </activity>
+        <activity android:name=".Category" />
+        <activity android:name=".ScreenSlidePager"/>
+
+        <activity android:name=".WritingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Category" />
-        <activity android:name=".ScreenSlidePager"/>
-        <activity android:name=".WritingActivity"/>
         <activity android:name=".OurTeam"/>
         <activity android:name=".Favourites" />
         <activity android:name=".Notification" />
