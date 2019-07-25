@@ -7,14 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".OurTeam">
 
-    <com.flaviofaria.kenburnsview.KenBurnsView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/splashimg" />
+    <!--<com.flaviofaria.kenburnsview.KenBurnsView-->
+        <!--android:id="@+id/image"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/splashimg" />-->
 
     <RelativeLayout
         android:layout_width="wrap_content"
+        android:background="#000"
         android:layout_height="wrap_content">
 
         <android.support.design.widget.CoordinatorLayout

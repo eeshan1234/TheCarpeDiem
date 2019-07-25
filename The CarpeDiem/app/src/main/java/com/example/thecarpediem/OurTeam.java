@@ -79,26 +79,26 @@ public class OurTeam extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(navListener);
 
-        kenBurnsView=(KenBurnsView)findViewById(R.id.image);
-        AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
-        RandomTransitionGenerator generator = new RandomTransitionGenerator(10000, ACCELERATE_DECELERATE);
-        kenBurnsView.setTransitionGenerator(generator);
-
-        kenBurnsView.setTransitionListener(onTransittionListener());
-
-        kenBurnsView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(moving){
-                    kenBurnsView.pause();
-                    moving=false;
-                }
-                else{
-                    kenBurnsView.resume();;
-                    moving=true;
-                }
-            }
-        });
+//        kenBurnsView=(KenBurnsView)findViewById(R.id.image);
+//        AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
+//        RandomTransitionGenerator generator = new RandomTransitionGenerator(10000, ACCELERATE_DECELERATE);
+//        kenBurnsView.setTransitionGenerator(generator);
+//
+//        kenBurnsView.setTransitionListener(onTransittionListener());
+//
+//        kenBurnsView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(moving){
+//                    kenBurnsView.pause();
+//                    moving=false;
+//                }
+//                else{
+//                    kenBurnsView.resume();;
+//                    moving=true;
+//                }
+//            }
+//        });
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Our Team");
         mDatabase.keepSynced(true);

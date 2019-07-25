@@ -1,19 +1,43 @@
 package com.example.thecarpediem;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class Notification extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mauthStateListener;
+    ListView listView;
+    DatabaseReference reference;
+    RecyclerView recyclerView;
+    LinearLayoutManager linearLayoutManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -51,7 +75,11 @@ public class Notification extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(navListener);
         setupFirebaseListener();
 
+        recyclerView=findViewById(R.id.recycler_view);
+        linearLayoutManager=new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
+        reference=FirebaseDatabase.getInstance().getReference("Notification");
     }
 
     private void setupFirebaseListener() {
@@ -74,17 +102,49 @@ public class Notification extends AppCompatActivity {
         };
     }
     @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseAuth.getInstance().addAuthStateListener(mauthStateListener);
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         if(mauthStateListener!=null)
             FirebaseAuth.getInstance().removeAuthStateListener(mauthStateListener);
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(mauthStateListener);
+        FirebaseRecyclerAdapter<Blog, BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Blog, Notification.BlogViewHolder>
+                (Blog.class, R.layout.cardviewnotific, Notification.BlogViewHolder.class, reference) {
+            @Override
+            protected void populateViewHolder(Notification.BlogViewHolder viewHolder, Blog model, int position) {
+                viewHolder.setTitle(model.getTitle());
+                viewHolder.setDesc(model.getDesc());
+                viewHolder.setImage(getApplicationContext(), model.getImage());
+            }
+        };
+        recyclerView.setAdapter(firebaseRecyclerAdapter);
+    }
 
+    public static class BlogViewHolder extends RecyclerView.ViewHolder {
+        View mview;
 
+        public BlogViewHolder(final View itemView) {
+            super(itemView);
+            mview = itemView;
+        }
+
+        public void setTitle(String title) {
+            TextView post_title = (TextView) mview.findViewById(R.id.item_title);
+            post_title.setText(title);
+        }
+
+        public void setDesc(String desc) {
+            TextView post_desc = (TextView) mview.findViewById(R.id.item_desc);
+            post_desc.setText(desc);
+        }
+
+        public void setImage(Context ctx, String image) {
+            ImageView post_Image = (ImageView)mview.findViewById(R.id.item_image);
+            Picasso.get().load(image).placeholder(R.drawable.splashimg).into(post_Image);
+        }
+    }
 }
+
