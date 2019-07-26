@@ -1,11 +1,8 @@
 package com.example.thecarpediem;
 
 import android.content.Intent;
-<<<<<<< HEAD
 import android.support.annotation.NonNull;
-=======
 import android.support.design.widget.TextInputEditText;
->>>>>>> add-writing
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,11 +18,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class WritingActivity extends AppCompatActivity {
     Button nextButton;
     Button previousButton;
-<<<<<<< HEAD
     private FirebaseAuth.AuthStateListener mauthStateListener;
 
-
-=======
     Button titleBoldButton;
     Button titleItalicsButton;
     Button titleTextStyleButton;
@@ -39,7 +33,6 @@ public class WritingActivity extends AppCompatActivity {
 
     EditText titleEditText;
     TextInputEditText textInputEditTextContent;
->>>>>>> add-writing
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +44,9 @@ public class WritingActivity extends AppCompatActivity {
 
         nextButton = (Button) findViewById(R.id.nextButton);
         previousButton = (Button) findViewById(R.id.previousButton);
+
+        previousButton.setEnabled(false);
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

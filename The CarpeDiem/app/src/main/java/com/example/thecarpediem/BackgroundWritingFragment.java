@@ -1,6 +1,7 @@
 package com.example.thecarpediem;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,12 +36,21 @@ public class BackgroundWritingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
         final View view = inflater.inflate(R.layout.fragment_background_writing, container, false);
+
         nextButton = (Button) view.findViewById(R.id.nextButton);
         previousButton = (Button)view.findViewById(R.id.previousButton);
         backgroundImageView = (ImageView) view.findViewById(R.id.backgroundImageView);
         content = view.findViewById(R.id.writing_content);
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(view.getContext(),Congratulations.class);
+                startActivity(i);
+            }
+        });
+
         content.setOnTouchListener(new View.OnTouchListener() {
             private GestureDetector gestureDetector = new GestureDetector(view.getContext(), new GestureDetector.SimpleOnGestureListener() {
 

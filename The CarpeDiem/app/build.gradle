@@ -38,15 +38,11 @@ dependencies {
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
     implementation 'com.github.ViksaaSkool:AwesomeSplash:v1.0.0'
     implementation 'com.android.support:design:28.+'
-<<<<<<< HEAD
     implementation 'info.hoang8f:fbutton:1.0.5'
     implementation 'com.google.firebase:firebase-auth:16.0.3'
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
-=======
     implementation 'nl.dionsegijn:konfetti:1.1.3'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41'
->>>>>>> add-writing
-
 
     implementation 'com.vstechlab.easyfonts:easyfonts:1.0.0'
     // Mrinal added font dependencies here.
