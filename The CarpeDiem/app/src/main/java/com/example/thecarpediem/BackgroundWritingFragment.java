@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,11 +19,14 @@ import android.widget.Toast;
  * A simple {@link Fragment} subclass.
  */
 public class BackgroundWritingFragment extends Fragment {
-
-
+    Button nextButton ;
+    Button previousButton;
+    WritingActivity writingActivity = new WritingActivity();
     public BackgroundWritingFragment() {
         // Required empty public constructor
+
     }
+
     TextView content;   //TODO : fetch inputs from the writing activity and display appropriately in this Background Writing Fragment.
     static int flag = 5;
     ImageView backgroundImageView;
@@ -33,8 +37,10 @@ public class BackgroundWritingFragment extends Fragment {
 
 
         final View view = inflater.inflate(R.layout.fragment_background_writing, container, false);
+        nextButton = (Button) view.findViewById(R.id.nextButton);
+        previousButton = (Button)view.findViewById(R.id.previousButton);
         backgroundImageView = (ImageView) view.findViewById(R.id.backgroundImageView);
-                content = view.findViewById(R.id.writing_content);
+        content = view.findViewById(R.id.writing_content);
         content.setOnTouchListener(new View.OnTouchListener() {
             private GestureDetector gestureDetector = new GestureDetector(view.getContext(), new GestureDetector.SimpleOnGestureListener() {
 
