@@ -1,23 +1,338 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout 
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#000"
-    tools:context=".Settings">
+    android:layout_height="wrap_content">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#D8F0EDED"
+    tools:context=".Settings"
+    android:padding="20dp">
 
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Settings Page"
-      android:layout_centerInParent="true"
-      android:textColor="#fff"
-      android:textStyle="bold"
-      android:textSize="30dp"
+      android:id="@+id/info"
+      android:text="Information"
+      android:textColor="#000000"
+
+      android:textSize="25dp"
+      android:layout_marginBottom="70px"
+
       />
-v
+
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/info"
+
+      android:background="#ffffff"
+      android:id="@+id/relative1"
+      android:elevation="20dp"
+      >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_black_24dp"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+        android:id="@+id/img1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/img1"
+        android:layout_marginLeft="50dp"
+        android:text="Get to know us"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+
+        android:textSize="20dp"
+        android:id="@+id/know_us"
+        android:textColor="#000000"
+        />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/know_us"
+
+        android:background="#000000"
+        android:id="@+id/line1"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_ac_unit_black_24dp"
+        android:id="@+id/img2"
+        android:layout_below="@+id/img1"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/img1"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+        android:text="Terms and Conditions"
+        android:textSize="20dp"
+        android:id="@+id/terms"
+        android:textColor="#000000"
+        android:layout_below="@+id/line1"
+        />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="#000000"
+        android:layout_below="@+id/terms"
+        android:id="@+id/line2"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_ac_unit_black_24dp"
+        android:id="@+id/img3"
+        android:layout_below="@+id/img2"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="50dp"
+        android:text="Privacy Policy"
+        android:textSize="20dp"
+        android:id="@+id/privacy"
+        android:textColor="#000000"
+        android:layout_below="@+id/line2"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+
+        />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="#000000"
+        android:layout_below="@+id/img3"
+
+        android:id="@+id/line3"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_contacts_black_24dp"
+        android:id="@+id/img4"
+        android:layout_below="@+id/img3"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/img1"
+        android:layout_marginLeft="50dp"
+        android:text="Contact Us"
+        android:textSize="20dp"
+        android:id="@+id/contact"
+        android:textColor="#000000"
+        android:layout_below="@+id/line3"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+        />
+
+  </RelativeLayout>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/relative1"
+      android:text="Application"
+      android:id="@+id/application"
+      android:textColor="#000000"
+      android:layout_marginTop="90px"
+      android:layout_marginBottom="70px"
+      android:textSize="25dp"
+      />
+
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/application"
+
+      android:background="#ffffff"
+      android:id="@+id/relative2"
+      android:elevation="20dp"
+      >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_black_24dp"
+        android:id="@+id/img5"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:text="Rate the App"
+        android:textSize="20dp"
+        android:id="@+id/rate"
+
+        android:textColor="#000000"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+        />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/rate"
+
+        android:background="#000000"
+        android:id="@+id/line4"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_ac_unit_black_24dp"
+        android:id="@+id/img6"
+        android:layout_below="@+id/line4"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="50dp"
+        android:text="Leave Us a Comment"
+        android:textSize="20dp"
+        android:id="@+id/comment"
+        android:textColor="#000000"
+        android:layout_below="@+id/line4"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+
+        />
+
+
+  </RelativeLayout>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/relative2"
+      android:text="Be a part of us"
+      android:id="@+id/app"
+      android:textColor="#000000"
+      android:layout_marginTop="90px"
+      android:layout_marginBottom="70px"
+      android:textSize="25dp"
+      />
+
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/app"
+
+      android:background="#ffffff"
+      android:id="@+id/relative3"
+      android:elevation="20dp"
+      >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_ac_unit_black_24dp"
+        android:id="@+id/img7"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:text="Campus Ambassador"
+        android:textSize="20dp"
+        android:id="@+id/sign_out"
+        android:textColor="#000000"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+
+        />
+
+  </RelativeLayout>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/relative3"
+      android:text="Account"
+      android:id="@+id/part"
+      android:textColor="#000000"
+      android:layout_marginTop="90px"
+      android:layout_marginBottom="70px"
+      android:textSize="25dp"
+      />
+
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/part"
+
+      android:background="#ffffff"
+      android:id="@+id/relative4"
+      android:elevation="20dp"
+      >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_ac_unit_black_24dp"
+        android:id="@+id/img8"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:text="Sign Out"
+        android:textSize="20dp"
+        android:id="@+id/be_a_part"
+        android:textColor="#000000"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
+
+        />
+
+  </RelativeLayout>
+
+</RelativeLayout>
+</ScrollView>
   <android.support.design.widget.BottomNavigationView
       android:id="@+id/bottom_navigation"
       android:layout_height="wrap_content"
