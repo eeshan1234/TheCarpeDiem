@@ -28,9 +28,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
     private int dotscount;
     private ImageView[] dots;
     InternetConnection ic;
+    ProgressBar progressBar;
+    ProgressBar progressBarlive;
+    ProgressBar progressBarword;
+
     private FirebaseAuth.AuthStateListener mauthStateListener;
     private String[] imgUrls={
             R.drawable.loadingimg+"",
@@ -87,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
+        progressBar=findViewById(R.id.progressbar);
+        progressBarword=findViewById(R.id.progressbarword);
+        progressBarlive=findViewById(R.id.progressbarlive);
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -151,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.exit:
                         AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage("Are you Sure? Want to exit?");
-                        builder.setCancelable(true);
+                        builder.setMessage("Are you sure want to exit?");
+                        builder.setCancelable(false);
 
                         builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
                             @Override
@@ -209,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     i=i+1;
                 }
                 ViewPagerAdapter adapterBest=new ViewPagerAdapter(MainActivity.this,imgUrls);
+                progressBar.setVisibility(View.INVISIBLE);
                 viewPagerBest.setAdapter(adapterBest);
 
             }
@@ -323,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Picasso.get().load(dataSnapshot.getValue().toString()).placeholder(R.drawable.loadingimg).into(imglive);
+                progressBarlive.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -337,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Picasso.get().load(dataSnapshot.getValue().toString()).placeholder(R.drawable.loadingimg).into(imgword);
+                progressBarword.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -355,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
         {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
             builder1.setMessage("NO Internet! Check Internet connection and try again.");
-            builder1.setCancelable(true);
+            builder1.setCancelable(false);
 
             builder1.setPositiveButton(
                     "Reload",
@@ -418,8 +431,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-            builder1.setMessage("Are you sure, Want to Exit?");
-            builder1.setCancelable(true);
+            builder1.setMessage("Are you sure want to Exit?");
+            builder1.setCancelable(false);
 
             builder1.setPositiveButton(
                     "Sure",
@@ -523,8 +536,8 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.exit:
                 AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("Are you Sure? Want to exit?");
-                builder.setCancelable(true);
+                builder.setMessage("Are you sure want to exit?");
+                builder.setCancelable(false);
 
                 builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
                     @Override

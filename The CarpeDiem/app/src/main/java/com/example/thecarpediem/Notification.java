@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class Notification extends AppCompatActivity {
     DatabaseReference reference;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
+    ProgressBar progressBar;
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -84,6 +86,8 @@ public class Notification extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         reference=FirebaseDatabase.getInstance().getReference("Notification");
+        progressBar=findViewById(R.id.progressbarnotific);
+        load();
     }
 
     private void setupFirebaseListener() {
@@ -111,9 +115,9 @@ public class Notification extends AppCompatActivity {
         if(mauthStateListener!=null)
             FirebaseAuth.getInstance().removeAuthStateListener(mauthStateListener);
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
+
+    public void load()
+    {
         FirebaseAuth.getInstance().addAuthStateListener(mauthStateListener);
         FirebaseRecyclerAdapter<Blog, BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Blog, Notification.BlogViewHolder>
                 (Blog.class, R.layout.cardviewnotific, Notification.BlogViewHolder.class, reference) {
@@ -124,7 +128,16 @@ public class Notification extends AppCompatActivity {
                 viewHolder.setImage(getApplicationContext(), model.getImage());
             }
         };
+        progressBar.setVisibility(View.INVISIBLE);
         recyclerView.setAdapter(firebaseRecyclerAdapter);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        progressBar.setVisibility(View.VISIBLE);
+
     }
 
     public static class BlogViewHolder extends RecyclerView.ViewHolder {
