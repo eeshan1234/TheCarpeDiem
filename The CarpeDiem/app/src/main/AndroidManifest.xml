@@ -13,9 +13,13 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Congratulations"></activity>
+        <activity android:name=".AmbassadorApply"></activity>
+        <activity android:name=".AmbassadorRule" />
+        <activity android:name=".AmbassadorIntro" />
+        <activity android:name=".video" />
+        <activity android:name=".live" />
+        <activity android:name=".Congratulations" />
         <activity android:name=".Settings" />
-        <activity android:name=".Login" />
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -23,6 +23,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,10 +49,17 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    CardView cardView;
+    TextView tv;
+    String inputday="10";
+    String inputmonth="9";
     ViewPager viewPagerBest,viewPager1,viewPager2;
     Adapter adapter;
     AdapterTech adapter1;
@@ -97,6 +106,59 @@ public class MainActivity extends AppCompatActivity {
         progressBarword=findViewById(R.id.progressbarword);
         progressBarlive=findViewById(R.id.progressbarlive);
 
+        cardView=findViewById(R.id.card);
+        tv=findViewById(R.id.card_view_image_title);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(MainActivity.this,live.class);
+                startActivity(i);
+            }
+        });
+        Date c= Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat=new SimpleDateFormat("dd");
+        String date=dateFormat.format(c);
+        SimpleDateFormat dateFormat1=new SimpleDateFormat("MM");
+        String month=dateFormat1.format(c);
+        SimpleDateFormat dateFormat2=new SimpleDateFormat("yyyy");
+        String year=dateFormat2.format(c);
+        int sysyear=Integer.parseInt(year);
+        int sysday=Integer.parseInt(date);
+        int inpday=Integer.parseInt(inputday);
+        int sysmonth=Integer.parseInt(month);
+        int inpmonth=Integer.parseInt(inputmonth);
+        if(inpmonth==sysmonth)
+        {
+            tv.setText("Next Video in "+(inpday-sysday)+" day (s)");
+        }
+        else if((inpmonth-sysmonth)==1)
+        {
+            int dayinmonth=31;
+            switch(sysmonth)
+            {
+                case 1: dayinmonth=31; break;
+                case 2: if(sysyear%4==0)
+                    dayinmonth=29;
+                else
+                    dayinmonth=28;
+                    break;
+                case 3: dayinmonth=31; break;
+                case 4: dayinmonth=30; break;
+                case 5: dayinmonth=31;break;
+                case 6: dayinmonth=30;break;
+                case 7: dayinmonth=31;break;
+                case 8: dayinmonth=31;break;
+                case 9: dayinmonth=30;break;
+                case 10: dayinmonth=31;break;
+                case 11: dayinmonth=30;break;
+                case 12: dayinmonth=31;break;
+
+            }
+            int x=dayinmonth-sysday;
+            tv.setText("Next Video in "+(inpday+x)+" day (s)");
+        }
+        else
+            tv.setText("Next Video coming soon !!");
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -194,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
         imgword=(ImageView)findViewById(R.id.wordimg);
-        imglive=(ImageView)findViewById(R.id.liveimg);
+        //imglive=(ImageView)findViewById(R.id.liveimg);
 
         refbestofday= FirebaseDatabase.getInstance().getReference("bestofday").child("imgs");
         reflive=FirebaseDatabase.getInstance().getReference("live");
@@ -333,8 +395,15 @@ public class MainActivity extends AppCompatActivity {
         reflive.child("img").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Picasso.get().load(dataSnapshot.getValue().toString()).placeholder(R.drawable.loadingimg).into(imglive);
-                progressBarlive.setVisibility(View.INVISIBLE);
+               try {
+                   Picasso.get().load(dataSnapshot.getValue().toString()).placeholder(R.drawable.loadingimg).into(imglive);
+
+                   progressBarlive.setVisibility(View.INVISIBLE);
+               }
+               catch (Exception e)
+               {
+                  // Toast.makeText(MainActivity.this,"Server error",Toast.LENGTH_SHORT).show();
+               }
             }
 
             @Override
@@ -574,12 +643,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("AccountManager","onAuthStateChanged: signed_in: "+user.getUid());
 
                 }
-                else{
-                    //signout
-                    Intent i=new Intent(MainActivity.this, Login.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
-                }
+
             }
         };
     }

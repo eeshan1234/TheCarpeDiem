@@ -21,7 +21,7 @@ public class Settings extends AppCompatActivity {
                     switch (menuItem.getItemId())
                     {
                         case R.id.home:
-                            Intent i=new Intent(Settings.this,MainActivity.class);
+                            Intent i=new Intent(Settings.this,AmbassadorIntro.class);
                             startActivity(i);
                             break;
 
@@ -49,7 +49,7 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         setupFirebaseListener();
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(navListener);
     }
 
@@ -63,12 +63,8 @@ public class Settings extends AppCompatActivity {
                     //signed-in
                     Log.d("AccountManager", "onAuthStateChanged: signed_in: " + user.getUid());
 
-                } else {
-                    //signout
-                    Intent i = new Intent(Settings.this, Login.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
                 }
+
             }
         };
     }

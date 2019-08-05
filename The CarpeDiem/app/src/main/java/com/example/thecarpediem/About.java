@@ -189,11 +189,6 @@ public class About extends AppCompatActivity {
                     //signed-in
                     Log.d("AccountManager", "onAuthStateChanged: signed_in: " + user.getUid());
 
-                } else {
-                    //signout
-                    Intent i = new Intent(About.this, Login.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
                 }
             }
         };
